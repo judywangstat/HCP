@@ -25,3 +25,4 @@ If the above two conditions are not met, the file **paths** in each `.R` file mu
 
 Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder.
 
+### Example
