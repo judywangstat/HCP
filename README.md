@@ -35,7 +35,12 @@ Table 1 can be reproduced in either of two ways:
      - The complete results for Table 1 will be saved as `"final_results_reproduce.csv"` in the `Table 1` folder.
      
 2. **Compute each value in Table 1 individually** – A faster approach, useful for a quick verification.  The steps are as follows:
-   - Open a single master code file in the `Table 1` folder, such as the HCP method (`HCP_marginal.R`), or other methods like `DWR.R`, `LC.R`, or `LMEM.R`.  
+   - Open a single master code file in the `Table 1` folder, such as the HCP method (`HCP_marginal.R`), or other methods like `DWR.R`, `LC.R`, or `LMEM.R`.
+   - Use the following code to clear the workspace and free memory:
+     ```R
+     rm(list = ls())  
+     gc()
+     ```  
    - Set the **sample size** (n) and **scenario** (scenario), for example:  
      ```R
      n <- 100  
@@ -43,11 +48,7 @@ Table 1 can be reproduced in either of two ways:
      ```  
    - Run the script.  
    - The results will be displayed directly in the console.
-   - Use the following code to clear the workspace and free memory for the next run:  
-     ```R
-     rm(list = ls())  
-     gc()
-     ```  
+
 
 
 ## Note 
