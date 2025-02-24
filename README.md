@@ -14,11 +14,14 @@ install.packages(c("MASS", "stats", "grf", "quantreg", "doParallel", "doRNG", "l
 ```
 
 To reproduce the program results, simply **download** the entire `simulation` and `real data` folders.
-Our program can automatically set the paths, so no manual setup is required.
+Our program can automatically set the **paths**, so no manual setup is required.
 However, to ensure the paths are recognized correctly, please note the following:
-- The code should be executed in the **RStudio** environment.
-- The original **folder structure** must remain unchanged.
+1. The code should be executed in the **RStudio** environment.
+2. The original **folder structure** must remain unchanged.
 
 
+If the above two conditions are not met, the file **paths** in each `.R` file must be manually configured, including specifying paths for function calls, loading input data, and saving results.
 
+
+Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder.
 
