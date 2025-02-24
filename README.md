@@ -47,7 +47,7 @@ Table 1 can be reproduced in either of two ways:
 ## Note 
 All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually.  
 For example, in **Table 1**, the paths need to be set manually in the following locations:  
--  In `main.R`, modify the paths for calling methods and saving results as follows:
+1.  In `main.R`, modify the paths for calling methods and saving results as follows:
    - Update the `source()` function calls to specify the full path.
 
      Modify the following code:  
@@ -65,14 +65,19 @@ For example, in **Table 1**, the paths need to be set manually in the following 
         source("/Users/yimenghan/Desktop/code/Table 1/LMEM.R", local = TRUE, chdir = TRUE)
         ```
 
-
-        
    -  Modify the path for saving results:
-     Modify the following code:  
-        ```r
+   
+      Modify the following code:  
+        ```R
         write.csv(final_results, file = file.path(main_dir, "final_results_reproduce.csv"), row.names = FALSE)
         ```
-     to a specific path, for example:  
+       to a specific path, for example:  
         ```R
-   write.csv(final_results, file = "/Users/yimenghan/Desktop/code/Table 1/final_results_reproduce.csv", row.names = TRUE)
+        write.csv(final_results, file = "/Users/yimenghan/Desktop/code/Table 1/final_results_reproduce.csv", row.names = TRUE)
         ```
+2. In `HCP_marginal.R`, `DWR.R`, `LC.R`, and `LMEM.R`, modify the paths for calling simple functions and passing them into parallel computation as follows:  
+
+
+
+
+
