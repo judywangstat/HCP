@@ -45,8 +45,8 @@ Table 1 can be reproduced in either of two ways:
    - The results will be displayed directly in the console.   
 
 ## Note 
-All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually.  
-For example, in **Table 1**, the paths need to be set manually in the following locations:  
+All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually.  For example, in **Table 1**, the paths need to be set manually in the following locations:  
+
 1.  In `main.R`, modify the paths for calling methods and saving results as follows:
    - Update the `source()` function calls to specify the full path.
 
