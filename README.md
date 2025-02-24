@@ -56,7 +56,7 @@ All scripts can automatically set **paths**, but if any issues occur, the paths 
 
 1.  In `main.R`, modify the paths for calling methods and saving results as follows:
 
-     - Update the `source()` function calls to specify the full path.
+     - Replace relative paths in `source()` with specified paths.  
 
        Modify the following code:  
         ```R
@@ -85,7 +85,7 @@ All scripts can automatically set **paths**, but if any issues occur, the paths 
          ```
 2. In `HCP_marginal.R`, `DWR.R`, `LC.R`, and `LMEM.R`, modify the paths for calling simple functions and passing them into parallel computation as follows:  
 
-    - Update the `source()` function calls to specify the full path.
+    - Replace relative paths in `source()` with specified paths.  
 
       Modify the following code:  
         ```R
