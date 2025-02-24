@@ -44,4 +44,35 @@ Table 1 can be reproduced in either of two ways:
    - Run the script.  
    - The results will be displayed directly in the console.   
 
-**Note:** All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually in the following locations:  
+## Note 
+All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually.  
+For example, in **Table 1**, the paths need to be set manually in the following locations:  
+-  In `main.R`, modify the paths for calling methods and saving results as follows:
+   - Update the `source()` function calls to specify the full path.
+
+     Modify the following code:  
+        ```R
+        source(file.path(main_dir, "HCP_marginal.R"), local = TRUE, chdir = TRUE)
+        source(file.path(main_dir, "DWR.R"), local = TRUE, chdir = TRUE)
+        source(file.path(main_dir, "LC.R"), local = TRUE, chdir = TRUE)
+        source(file.path(main_dir, "LMEM.R"), local = TRUE, chdir = TRUE)
+        ```
+     to a specific path, for example:  
+        ```R
+        source("/Users/yimenghan/Desktop/code/Table 1/HCP_marginal.R", local = TRUE, chdir = TRUE)
+        source("/Users/yimenghan/Desktop/code/Table 1/DWR.R", local = TRUE, chdir = TRUE)
+        source("/Users/yimenghan/Desktop/code/Table 1/LC.R", local = TRUE, chdir = TRUE)
+        source("/Users/yimenghan/Desktop/code/Table 1/LMEM.R", local = TRUE, chdir = TRUE)
+        ```
+
+
+        
+   -  Modify the path for saving results:
+     Modify the following code:  
+        ```r
+        write.csv(final_results, file = file.path(main_dir, "final_results_reproduce.csv"), row.names = FALSE)
+        ```
+     to a specific path, for example:  
+        ```R
+   write.csv(final_results, file = "/Users/yimenghan/Desktop/code/Table 1/final_results_reproduce.csv", row.names = TRUE)
+        ```
