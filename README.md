@@ -25,10 +25,16 @@ If the above two conditions are not met, the file **paths** in each `.R` file mu
 
 Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder.
 
-### Example
+## Example
 To reproduce the results in **Table 1** of the paper, navigate to [this repository](https://github.com/judywangstat/HCP.git), click the green **"Code"** button in the top right corner, and select **"Download ZIP"**.
 After downloading the ZIP file, extract it, navigate to the `simulation` folder, and enter the `Table 1` directory.
+Table 1 can be reproduced in either of two ways:
+1. **Generate the entire Table 1** – A straightforward and convenient approach that requires no manual setup. The steps are as follows:
+     - Open the `main.R` file in the `Table 1` folder.  
+     - Run the script.  
+     - The complete results for Table 1 will be saved as `"final_results_reproduce.csv"` in the `Table 1` folder.
+     
+   
 
-
-### Example
+## Example
 For a single master code file implementing the proposed method, simply run 
