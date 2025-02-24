@@ -42,7 +42,13 @@ Table 1 can be reproduced in either of two ways:
      scenario <- "Homo"
      ```  
    - Run the script.  
-   - The results will be displayed directly in the console.   
+   - The results will be displayed directly in the console.
+   - Use the following code to clear the workspace and free memory for the next run:  
+     ```R
+     rm(list = ls())  
+     gc()
+     ```  
+
 
 ## Note 
 All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually.  For example, in **Table 1**, the paths need to be set manually in the following locations:  
