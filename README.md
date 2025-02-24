@@ -26,9 +26,9 @@ If the above two conditions are not met, the file **paths** in each `.R` file mu
 Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder.
 
 ### Example
-
+To reproduce the results in **Table 1** of the paper, navigate to [this repository](https://github.com/judywangstat/HCP.git), click the green **"Code"** button in the top right corner, and select **"Download ZIP"**.
+After downloading the ZIP file, extract it, navigate to the `simulation` folder, and enter the `Table 1` directory.
 
 
 ### Example
-For a single master
-code file implementing the proposed method, simply run CD4_HCP.R in Table 3 folder.
+For a single master code file implementing the proposed method, simply run 
