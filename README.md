@@ -20,10 +20,10 @@ However, to ensure the paths are recognized correctly, please note the following
 2. The original **folder structure** must remain unchanged.
 
 
-If the above two conditions are not met, the file **paths** in each `.R` file must be manually configured, including specifying paths for function calls, loading input data, and saving results.
+If the above two conditions are not met, the file **paths** in each `.R` file must be manually configured, including specifying paths for function calls, loading input data, and saving results; 
+see the **Note** at the end for details. 
 
-
-Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder.
+Once the paths are correctly set, simply click on the `main.R` file in each folder to run the program directly. The results will be automatically saved in the corresponding folder. See the example below for details.  
 
 ## Example
 To reproduce the results in **Table 1** of the paper, navigate to [this repository](https://github.com/judywangstat/HCP.git), click the green **"Code"** button in the top right corner, and select **"Download ZIP"**.
