@@ -34,7 +34,14 @@ Table 1 can be reproduced in either of two ways:
      - Run the script.  
      - The complete results for Table 1 will be saved as `"final_results_reproduce.csv"` in the `Table 1` folder.
      
-   
+2. **Compute each value in Table 1 individually** – A faster approach, useful for a quick verification.  The steps are as follows:
+   - Open a single master code file in the `Table 1` folder, such as the HCP method (`HCP_marginal.R`), or other methods like `DWR.R`, `LC.R`, or `LMEM.R`.  
+   - Set the **sample size** (n) and **scenario** (scenario), for example:  
+     ```R
+     n <- 100  
+     scenario <- "Homo"
+     ```  
+   - Run the script.  
+   - The results will be displayed directly in the console.   
 
-## Example
-For a single master code file implementing the proposed method, simply run 
+**Note:** All scripts can automatically set **paths**, but if any issues occur, the paths need to be configured manually in the following locations:  
