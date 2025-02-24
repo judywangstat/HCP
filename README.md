@@ -8,5 +8,17 @@ We provide the code for all tables and figures in the paper’s simulation and r
 
 
 ## Instructions for Use
+First, make sure to install the required R packages by running the following command:
+```R
+install.packages(c("MASS", "stats", "grf", "quantreg", "doParallel", "doRNG", "lme4", "merTools", "randomForest", "rstudioapi"))
+```
 
-- 📁
+To reproduce the program results, simply **download** the entire `simulation` and `real data` folders.
+Our program can automatically set the paths, so no manual setup is required.
+However, to ensure the paths are recognized correctly, please note the following:
+- The code should be executed in the **RStudio** environment.
+- The original **folder structure** must remain unchanged.
+
+
+
+
