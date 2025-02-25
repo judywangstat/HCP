@@ -60,10 +60,6 @@ results <- foreach(
   .combine = rbind,
   .options.RNG = 123
 ) %dorng% {
-  # results = vector("list", num_simulations) #matrix(0, nrow = num_simulations, ncol = 4)
-  # for(sim in 1:num_simulations) {
-  # print(sim)
-  # set.seed(sim+1)
   
   ###  generate data  ###
   data = generate_data(n, m, d, scenario, theta_mu, theta_sigma, X_mu, X_sigma, beta)
@@ -246,7 +242,6 @@ results <- foreach(
                              newdata = as.data.frame(X_cali_sample_obs),
                              type = "response")
       }
-      #prob_cali  = bound_value(prob_cali, 0.05, 0.95)
       wt_cali = 1 / prob_cali
       wt_cali = pmin(wt_cali, max_wt)
       
@@ -328,7 +323,6 @@ results <- foreach(
   }
   
   
-  #results[[sim]] = each_result
   list(each_result)
 }
 

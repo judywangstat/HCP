@@ -63,11 +63,7 @@ results <- foreach(
   .combine = rbind,
   .options.RNG = 123
 ) %dorng% {
-  # results = vector("list", num_simulations) #matrix(0, nrow = num_simulations, ncol = 4)
-  #   for(i in 1:num_simulations) {
-  #   print(i)
-  #   set.seed(i+100)
-  
+
   ###  generate data  ###
   data = generate_data(n, m, d, scenario, theta_mu, theta_sigma, X_mu, X_sigma, beta)
   
@@ -223,7 +219,6 @@ results <- foreach(
     each_result[test, ] = c(in_interval, result_length)
   }
   
-  #results[[sim]] = each_result
   list(each_result)
 }
 

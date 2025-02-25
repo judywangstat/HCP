@@ -57,10 +57,7 @@ results <- foreach(
   .combine = rbind,
   .options.RNG = 123
 ) %dorng% {
-  # results = matrix(0, nrow = num_simulations, ncol = 4)
-  #   for(i in 1:num_simulations) {
-  #   print(i)
-  #   set.seed(i+100)
+
   
   ###  generate data  ###
   data = generate_data(n, m, d, scenario, theta_mu, theta_sigma, X_mu, X_sigma, beta)
@@ -96,33 +93,7 @@ results <- foreach(
   
   data_test <- data.frame(group = rep(0, 5))
   data_test[X_columns] <- X_test[[1]]
-  
-  # point_pred = predict(random_effect_model,
-  #                      newdata = data_test,
-  #                      allow.new.levels = TRUE)
-  #
-  # residual_var <- sigma(random_effect_model)^2
-  # beta_cov_matrix <- vcov(random_effect_model)
-  # random_effects_cov <- as.matrix(VarCorr(random_effect_model)$group)
-  # fixed_effect_var = diag(X_test[[1]] %*% beta_cov_matrix %*% t(X_test[[1]]))
-  # random_effect_var  =  diag(X_test[[1]] %*% random_effects_cov %*% t(X_test[[1]]))
-  #
-  # total_variance = residual_var + fixed_effect_var + random_effect_var
-  #
-  #
-  # residual_sd <- sqrt(total_variance)
-  # #residual_sd <- sigma(random_effect_model)
-  # z_value <- qnorm(1 - alpha / 2)
-  # lower_bound <- point_pred - z_value * residual_sd
-  # upper_bound <- point_pred + z_value * residual_sd
-  #
-  # pred_inter <- data.frame(
-  #   Y_true = Y_test[[1]],
-  #   Prediction = point_pred,
-  #   Lower_PI_90 = lower_bound,
-  #   Upper_PI_90 = upper_bound
-  # )
-  
+
   pred_intervals <- predictInterval(
     random_effect_model,
     newdata = data_test,
