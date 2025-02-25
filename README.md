@@ -26,7 +26,7 @@ see the **Note** at the end for details.
 Once the paths are correctly set, simply click on the `"main.R"` file in each folder to run the program directly. 
 The results will be automatically saved in the corresponding folder as `"final_results_reproduce.csv"`. 
 Our original results, stored as `"final_results.csv"`, are in the same folder and can be used for comparison before and after reproduction.
-See the **example**  below for details.  
+See the **Example**  below for details.  
 
 ## Example
 To reproduce the results in **Table 1** of the paper, navigate to [this repository](https://github.com/judywangstat/HCP.git), click the green **"Code"** button in the top right corner, and select **"Download ZIP"**.
