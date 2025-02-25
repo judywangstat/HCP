@@ -323,7 +323,6 @@ results <- foreach(
   }
   
   
-  #results[[test_id]] = each_result
   list(each_result)
 }
 

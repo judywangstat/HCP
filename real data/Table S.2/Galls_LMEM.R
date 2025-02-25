@@ -91,8 +91,6 @@ results <- foreach(
   .options.RNG = 123  
 ) %dorng% {
   
-  # results = vector("list", n) 
-  # for (test_id in seq_len(n)) {
   
   ### Leave one out test data ###
   print(test_id)

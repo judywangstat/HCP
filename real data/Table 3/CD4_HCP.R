@@ -23,7 +23,6 @@ alpha = 0.1
 n_grid = 200
 wt_model = "logistic"   # "logistic", "grf"
 quantile_model = "grf"   # "linear", "grf"
-#missing <- "50"  #c("20", "50")
 
 
 ### Importing data ###
@@ -312,7 +311,6 @@ results <- foreach(
   }
   
   
-  #results[[test_id]] = each_result
   list(each_result)
 }
 

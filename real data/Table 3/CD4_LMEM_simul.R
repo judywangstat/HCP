@@ -73,8 +73,8 @@ results <- foreach(
   .combine = rbind,  
   .options.RNG = 123  
 ) %dorng% {
-  # for (test_id in seq_len(n)) {
-  print(test_id)
+
+
   ### Leave one out test data ###
   Ti_test <- Ti[test_id]
   X_test <- X_list[[test_id]]

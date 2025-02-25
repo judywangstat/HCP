@@ -91,11 +91,8 @@ results <- foreach(
   .options.RNG = 123  
 ) %dorng% {
   
-  # results = vector("list", n) 
-  # for (test_id in seq_len(n)) {
   
   ### Leave one out test data ###
-  print(test_id)
   X_test <- X_list[[test_id]]
   Y_test <- Y_list_imputed[[test_id]]
   Delta_test <- Delta_list[[test_id]]

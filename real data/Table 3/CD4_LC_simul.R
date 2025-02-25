@@ -73,12 +73,12 @@ clusterEvalQ(cl, {
 })
 
 results <- foreach(
-  test_id = seq_len(n),  # 每次取一个数据作为test
-  .combine = rbind,  # 组合每次的结果
-  .options.RNG = 123  # 设置随机数种子，确保可重复性
+  test_id = seq_len(n), 
+  .combine = rbind,  
+  .options.RNG = 123  
 ) %dorng% {
-  # for (test_id in seq_len(n)) {
-  print(test_id)
+
+
   ### Leave one out test data ###
   X_test <- X_list[[test_id]]
   Y_test <- Y_list[[test_id]]

@@ -84,10 +84,6 @@ results <- foreach(
   .options.RNG = 123
 ) %dorng% {
   
-  # results = vector("list", n) #matrix(0, nrow = num_simulations, ncol = 4)
-  # for(test_id in seq_len(n)) {
-  # print(test_id)
-  # set.seed(test_id)
   
   ### Leave one out test data ###
   X_test <- X_list[[test_id]]
@@ -317,7 +313,6 @@ results <- foreach(
   }
   
   
-  #results[[test_id]] = each_result
   list(each_result)
 }
 
