@@ -83,6 +83,6 @@ p4 <- leng_plot(df, "Mean_Leng_10", "SD_Leng_10", "K=10")
 plot_grid = grid.arrange(p1, p3, p2, p4, ncol = 2)
 
 # Save PDF plot and CSV file
-ggsave(filename = file.path(main_dir, "condi_300.pdf"), plot = plot_grid, width = 5.5, height = 4)
+ggsave(filename = file.path(main_dir, "condi_300_reproduce.pdf"), plot = plot_grid, width = 5.5, height = 4)
 write.csv(combined_matrix, file = file.path(main_dir, "final_results_reproduce.csv"), row.names = FALSE)
 

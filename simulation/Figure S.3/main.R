@@ -22,12 +22,12 @@ run_HCP_condition <- function(nclusters) {
 }
 
 output_matrix_1 <- run_HCP_condition(nclusters = 1)
-output_matrix_10 <- run_HCP_condition(nclusters = 20)
+output_matrix_20 <- run_HCP_condition(nclusters = 20)
 
 
-combined_matrix <- cbind(output_matrix_1, output_matrix_10)
+combined_matrix <- cbind(output_matrix_1, output_matrix_20)
 colnames(combined_matrix) <- c("Mean_Cover_1", "SD_Cover_1", "Mean_Leng_1", "SD_Leng_1",
-                               "Mean_Cover_10", "SD_Cover_10", "Mean_Leng_10", "SD_Leng_10")
+                               "Mean_Cover_20", "SD_Cover_20", "Mean_Leng_20", "SD_Leng_20")
 
 print(combined_matrix)
 
@@ -41,10 +41,10 @@ df <- data.frame(
   SD_Cover_1 = combined_matrix[, "SD_Cover_1"],
   Mean_Leng_1 = combined_matrix[, "Mean_Leng_1"],
   SD_Leng_1 = combined_matrix[, "SD_Leng_1"],
-  Mean_Cover_10 = combined_matrix[, "Mean_Cover_10"],
-  SD_Cover_10 = combined_matrix[, "SD_Cover_10"],
-  Mean_Leng_10 = combined_matrix[, "Mean_Leng_10"],
-  SD_Leng_10 = combined_matrix[, "SD_Leng_10"]
+  Mean_Cover_20 = combined_matrix[, "Mean_Cover_20"],
+  SD_Cover_20 = combined_matrix[, "SD_Cover_20"],
+  Mean_Leng_20 = combined_matrix[, "Mean_Leng_20"],
+  SD_Leng_20 = combined_matrix[, "SD_Leng_20"]
 )
 
 
@@ -75,14 +75,14 @@ leng_plot <- function(df, y_var, y_sd_var, title) {
     theme(plot.title = element_text(hjust = 0.5)) # Center the title
 }
 
-# Generate plots for both K=1 and K=10 cases
+# Generate plots for both K=1 and K=20 cases
 p1 <- cover_plot(df, "Mean_Cover_1", "SD_Cover_1", "K=1")
 p2 <- leng_plot(df, "Mean_Leng_1", "SD_Leng_1", "K=1")
-p3 <- cover_plot(df, "Mean_Cover_10", "SD_Cover_10", "K=10")
-p4 <- leng_plot(df, "Mean_Leng_10", "SD_Leng_10", "K=10")
+p3 <- cover_plot(df, "Mean_Cover_20", "SD_Cover_20", "K=20")
+p4 <- leng_plot(df, "Mean_Leng_20", "SD_Leng_20", "K=20")
 plot_grid = grid.arrange(p1, p3, p2, p4, ncol = 2)
 
 # Save PDF plot and CSV file
-ggsave(filename = file.path(main_dir, "condi_500.pdf"), plot = plot_grid, width = 5.5, height = 4)
+ggsave(filename = file.path(main_dir, "condi_500_reproduce.pdf"), plot = plot_grid, width = 5.5, height = 4)
 write.csv(combined_matrix, file = file.path(main_dir, "final_results_reproduce.csv"), row.names = FALSE)
 
