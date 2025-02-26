@@ -6,6 +6,8 @@ if (exists("cl")) {
 }
 gc()
 
+library(ggplot2)
+library(gridExtra)
 library(rstudioapi)
 main_path <- getSourceEditorContext()$path
 main_dir <- dirname(main_path)
