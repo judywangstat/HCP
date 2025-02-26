@@ -10,7 +10,7 @@ We provide the code for all tables and figures in the paper’s simulation and r
 ## Instructions for Use
 First, make sure to install the required R packages by running the following command:
 ```R
-install.packages(c("MASS", "stats", "grf", "quantreg", "doParallel", "doRNG", "lme4", "merTools", "randomForest", "rstudioapi", "ggplot2", "gridExtra"))
+install.packages(c("MASS", "stats", "grf", "quantreg", "doParallel", "doRNG", "lme4", "merTools", "randomForest", "rstudioapi", "ggplot2", "gridExtra", "viridis"))
 ```
 
 Then, to reproduce the program results, simply **download** the entire `"simulation"` and `"real data"` folders.
