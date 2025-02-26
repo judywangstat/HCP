@@ -66,7 +66,7 @@ leng_plot <- function(data, sample_size, y_col, sd_col) {
     labs(x = "B", y = "Marginal Length", title = paste("n =", sample_size)) +
     theme_minimal(base_size = 7.5) +
     theme(plot.title = element_text(hjust = 0.5))+
-    ylim(13, 21)
+    ylim(13, 22)
 }
 
 
