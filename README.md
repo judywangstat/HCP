@@ -1,4 +1,4 @@
-# Hierarchical Conformal Prediction for Clustered Data with Missing Responses
+# Hierarchical Conformal Prediction (HCP) for Clustered Data with Missing Responses
 
 
 ## Abstract
