@@ -118,7 +118,7 @@ dat_train <- generate_clustered_mar(
 )
 y_grid <- seq(-6, 6, length.out = 201)
 ```
-####  Case 1: one patient, one measurement
+####  Case 1: test one patient, one measurement
 ```r
 test_11 <- data.frame(pid = 1, X1 = 2.5)
 out_11 <- hcp_predict_targets(
@@ -131,7 +131,7 @@ out_11 <- hcp_predict_targets(
 out_11$pred
 ```
 
-####  Case 2: one patient, multiple measurements
+####  Case 2: test one patient, multiple measurements
 ```r
 test_1M <- data.frame(pid = 1, X1 = c(1, 3, 7, 9))
 out_1M <- hcp_predict_targets(
@@ -144,7 +144,7 @@ out_1M <- hcp_predict_targets(
 out_1M$pred
 ```
 
-####  Case 3: multiple patients, one measurement
+####  Case 3: test multiple patients, one measurement
 ```r
 test_P1 <- data.frame(pid = 1:4, X1 = c(2, 4, 6, 8))
 out_P1 <- hcp_predict_targets(
@@ -157,7 +157,7 @@ out_P1 <- hcp_predict_targets(
 out_P1$pred
 ```
 
-####  Case 4: multiple patients, multiple measurements per patient
+####  Case 4: test multiple patients, multiple measurements per patient
 ```r
 test_PM <- data.frame(
   pid = c(1,1, 2,2,2, 3,3),
