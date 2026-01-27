@@ -217,6 +217,9 @@ plot_hcp_intervals(
   main = "Case A: one patient, multiple time points (band vs time)"
 )
 ```
+<p align="center">
+  <img src="../../figures/band_example.png" width="500">
+</p>
 
 #### Plot B: multiple patients, one target each (intervals by patient) 
 ```r
@@ -237,3 +240,6 @@ plot_hcp_intervals(
   main = "Case B: multiple patients, one time point (by patient)"
 )
 ```
+<p align="center">
+  <img src="../../figures/pid_example.png" width="500">
+</p>
