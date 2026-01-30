@@ -213,48 +213,67 @@ for (pp in unique(tr0$pid)) {
 legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", lwd = 1)
 ```
 
-####  Plot A: one patient, multiple measurements (band vs time)
+####  Case A: band vs time for subjects
 ```r
-pid <- dat_test$id[1]
-idx <- which(dat_test$id == pid)
-idx <- idx[order(dat_test$X1[idx])][1:10]
-test_1M <- data.frame(pid = pid, X1 = dat_test$X1[idx], y_true = dat_test$Y_full[idx])
+for (pid in c(54, 92, 186)) {
+  if (!any(dat0$id == pid)) next
+  ## leave one out
+  dat_test  <- dat0[dat0$id == pid, ]
+  dat_train <- dat0[dat0$id != pid, ]
+  x_test <- data.matrix(dat_test[, x_cols, drop = FALSE])
 
-out_1M <- hcp_predict_targets(
-  dat = dat_train, test = test_1M,
-  x_cols = "X1", y_grid = y_grid,
-  alpha = 0.1,
-  S = 3, B = 3,
-  seed = 1
-)
-plot_hcp_intervals(
-  out_1M$pred, mode = "band", x_col = "X1",
-  y_true_col = "y_true", show_true = TRUE,
-  main = "Case A: one patient, multiple time points (band vs time)"
-)
+  res <- hcp_conformal_region(
+    dat = dat_train,
+    id_col = "id",
+    y_col = "Y",
+    delta_col = "delta",
+    x_cols = x_cols,
+    x_test = x_test,
+    y_grid = y_grid,
+    alpha = 0.1, S = 1, B = 1,
+    dens_method = "rq",
+    dens_taus = seq(0.05, 0.95, by = 0.01),
+    seed = 1
+  )
+  pred <- data.frame(
+    X1 = dat_test$X1,
+    lo = pmax(as.numeric(res$lo_hi[, 1]), 0),
+    hi = pmax(as.numeric(res$lo_hi[, 2]), 0),
+    y_true = pmax(as.numeric(dat_test$Y_full), 0)
+  )
+  plot_hcp_intervals(
+    pred, mode = "band", x_col = "X1",
+    y_true_col = "y_true", show_true = TRUE,
+main = sprintf("Case A: prediction band vs time: pid=%s (M=%d)", pid, nrow(pred))
+  )
+}
 ```
 <p align="center">
   <img src="figures/band_example.png" width="500">
 </p>
 
-#### Plot B: multiple patients, one measurement each (intervals by patient) 
+#### Case B: random subjects; one time point per subject
 ```r
-pids <- unique(dat_test$id)[1:20]
-test_P1 <- subset(dat_test, id %in% pids & j == 1, select = c(id, X1, Y_full))
-names(test_P1) <- c("pid", "X1", "y_true")
+set.seed(2)
+idsB <- sample(unique(dat0$id), 20)
+datB <- dat0[dat0$id %in% idsB, ]
+datB <- datB[!duplicated(datB$id), ]  # earliest (dat0 already ordered)
+x_testB <- data.matrix(datB[, x_cols, drop = FALSE])
 
-out_P1 <- hcp_predict_targets(
-  dat = dat_train, test = test_P1,
-  x_cols = "X1", y_grid = y_grid,
-  alpha = 0.1,
-  S = 3, B = 3,
-  seed = 1
+resB <- hcp_conformal_region(
+  dat = dat0[!(dat0$id %in% idsB), ],
+  id_col = "id", y_col = "Y", delta_col = "delta",
+  x_cols = x_cols, x_test = x_testB,
+  y_grid = y_grid, alpha = 0.1, S = 1, B = 1,
+  dens_method = "rq", dens_taus = seq(0.05, 0.95, by = 0.01), seed = 2
 )
-plot_hcp_intervals(
-  out_P1$pred, mode = "pid", pid_col = "pid", x_sort_col = "X1",
-  y_true_col = "y_true", show_true = TRUE,
-  main = "Case B: multiple patients, one time point (by patient)"
-)
+predB <- data.frame(pid = datB$id, X1 = datB$X1,
+                    lo = pmax(as.numeric(resB$lo_hi[,1]), 0),
+                    hi = pmax(as.numeric(resB$lo_hi[,2]), 0),
+                    y_true = pmax(as.numeric(datB$Y_full), 0))
+plot_hcp_intervals(predB, mode = "pid", pid_col = "pid", x_sort_col = "X1",
+                   y_true_col = "y_true", show_true = TRUE,
+                   main = "Case B: random subjects, one time point")
 ```
 <p align="center">
   <img src="figures/pid_example.png" width="500">
