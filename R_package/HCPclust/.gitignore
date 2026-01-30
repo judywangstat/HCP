@@ -5,3 +5,6 @@
 .Ruserdata
 *.Rproj
 .DS_Store
+
+# local / metadata
+.git/
