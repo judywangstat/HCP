@@ -33,5 +33,6 @@ Suggests:
     knitr,
     rmarkdown,
     FNN,
+    lqmix,
     rstudioapi
 Config/testthat/edition: 3

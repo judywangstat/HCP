@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^cran-comments\.md$
-
-^\.git$
 ^\.DS_Store$
 ^\.Rhistory$
+^\.git$

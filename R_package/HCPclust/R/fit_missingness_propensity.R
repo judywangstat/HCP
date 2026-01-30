@@ -49,12 +49,15 @@
 #' fit_log <- fit_missingness_propensity(dat, "delta", x_cols, method = "logistic")
 #' p_log <- fit_log$predict(dat[, x_cols, drop = FALSE])
 #' head(p_log)
+#'
 #' \donttest{
 #' ## Compare with other methods
-#' ## True propensity under the generator
+#' ## True propensity under the generator (account for intercept shift)
 #' s <- attr(dat, "alpha_shift")
-#' eta <- (-0.4) + (-1.0) * dat$X1 + 0.8 * dat$X2
-#' pi_true <- 1 / (1 + exp(-pmin(pmax(eta, -30), 30)))
+#' if (is.null(s)) s <- 0
+#' eta <- (-0.4 + s) + (-1.0) * dat$X1 + 0.8 * dat$X2
+#' eta <- pmin(pmax(eta, -30), 30)
+#' pi_true <- plogis(eta)
 #'
 #' fit_grf <- fit_missingness_propensity(
 #'   dat, "delta", x_cols,
@@ -64,7 +67,10 @@
 #'   dat, "delta", x_cols,
 #'   method = "boosting",
 #'   nrounds = 300,
-#'   params = list(max_depth = 3, eta = 0.05, subsample = 0.8, colsample_bytree = 0.8),
+#'   params = list(
+#'     max_depth = 3, eta = 0.05,
+#'     subsample = 0.8, colsample_bytree = 0.8
+#'   ),
 #'   nthread = 1
 #' )
 #'
@@ -73,11 +79,16 @@
 #'
 #' op <- par(mfrow = c(1, 3))
 #' plot(pi_true, p_log, pch = 16, cex = 0.5,
-#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "Logistic"); abline(0, 1, lwd = 2)
+#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "Logistic")
+#' abline(0, 1, lwd = 2)
+#'
 #' plot(pi_true, p_grf, pch = 16, cex = 0.5,
-#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "GRF"); abline(0, 1, lwd = 2)
+#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "GRF")
+#' abline(0, 1, lwd = 2)
+#'
 #' plot(pi_true, p_xgb, pch = 16, cex = 0.5,
-#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "Boosting"); abline(0, 1, lwd = 2)
+#'      xlab = "True pi(x)", ylab = "Estimated pi-hat(x)", main = "Boosting")
+#' abline(0, 1, lwd = 2)
 #' par(op)
 #' }
 #' @export
