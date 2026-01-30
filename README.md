@@ -173,25 +173,33 @@ out_PM <- hcp_predict_targets(
 out_PM$pred
 ```
 
-### B)  Two plots
-####  Generate training data and test data
+### B)  Plots for two cases
+####  Load CD4 data as an example (lqmix::cd4)
 ```r
-dat_train <- generate_clustered_mar(
-  n = 200, m = 20, d = 1,
-  x_dist = "uniform", x_params = list(min = 0, max = 10),
-  hetero_gamma = 2.5,
-  target_missing = 0.30,
-  seed = 1
-)
-y_grid <- seq(-6, 10, length.out = 201)
+if (!requireNamespace("lqmix", quietly = TRUE)) {
+  stop("Package 'lqmix' is required for this example.")
+}
+data(cd4, package = "lqmix")
 
-dat_test <- generate_clustered_mar(
-  n = 100, m = 20, d = 1,
-  x_dist = "uniform", x_params = list(min = 0, max = 10),
-  hetero_gamma = 2.5,
-  seed = 999
+dat0 <- data.frame(
+  id = cd4$sbj.id,
+  X1 = cd4$time,
+  X2 = cd4$age,
+  X3 = cd4$packs,
+  X4 = cd4$partners,
+  X5 = cd4$drugs,
+  X6 = cd4$cesd,
+  Y_full = cd4$count
 )
+dat0 <- dat0[order(dat0$id, dat0$X1), ]
+dat0$delta <- 1L; dat0$Y <- dat0$Y_full
+x_cols <- sort(grep("^X\\d+$", names(dat0), value = TRUE))
+
+yr <- range(dat0$Y_full, finite = TRUE)
+pad <- 0.10 * diff(yr); if (!is.finite(pad) || pad <= 0) pad <- 50
+y_grid <- seq(max(0, yr[1] - pad), yr[2] + pad, length.out = 201)
 ```
+
 ####  Plot A: one patient, multiple measurements (band vs time)
 ```r
 pid <- dat_test$id[1]
