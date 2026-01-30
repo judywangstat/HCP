@@ -216,7 +216,7 @@ legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", 
   <img src="figures/observed.png" width="500">
 </p>
 
-####  Case A: band vs time for subjects
+#### Case A: plot band vs time for subjects
 ```r
 for (pid in c(54, 92, 186)) {
   if (!any(dat0$id == pid)) next
@@ -259,9 +259,10 @@ main = sprintf("Case A: prediction band vs time: pid=%s (M=%d)", pid, nrow(pred)
 </p>
 <p align="center">
   <img src="figures/pid186.png" width="500">
-</p
+</p>
 
-#### Case B: random subjects; one time point per subject
+
+#### Case B: plot one time point per subject for randomly selected subjects
 ```r
 set.seed(2)
 idsB <- sample(unique(dat0$id), 20)
