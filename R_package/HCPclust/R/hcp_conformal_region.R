@@ -209,8 +209,19 @@ hcp_conformal_region <- function(
     dat_cal[unlist(pick), , drop = FALSE]
   }
 
+  # helper: robust delta==1 detection
+  is_delta1 <- function(d_raw) {
+    d_chr <- toupper(trimws(as.character(d_raw)))
+    d_num <- suppressWarnings(as.numeric(d_chr))
+    (!is.na(d_num) & d_num == 1) | (d_chr %in% c("1","TRUE","T"))
+  }
+  is_delta0 <- function(d_raw) {
+    d_chr <- toupper(trimws(as.character(d_raw)))
+    d_num <- suppressWarnings(as.numeric(d_chr))
+    (!is.na(d_num) & d_num == 0) | (d_chr %in% c("0","FALSE","F"))
+  }
+
   # ---- main storage ----
-  # split-level combined p-values: S x K x Ny
   p_split_arr <- array(NA_real_, dim = c(S, K, Ny))
   split_meta <- if (isTRUE(return_details)) vector("list", S) else NULL
 
@@ -220,7 +231,7 @@ hcp_conformal_region <- function(
     dat_tr <- sp$train
     dat_ca <- sp$calib
 
-    # Step (1): fit once per split
+    # Step (1): fit density once per split
     dens_fit <- fit_cond_density_quantile(
       dat_tr,
       y_col = y_col, delta_col = delta_col, x_cols = x_cols,
@@ -229,63 +240,75 @@ hcp_conformal_region <- function(
       enforce_monotone = enforce_monotone,
       tail_decay = tail_decay
     )
-    prop_fit <- fit_missingness_propensity(
-      dat_tr,
-      delta_col = delta_col,
-      x_cols = x_cols,
-      method = prop_method,
-      eps = prop_eps,
-      ...
-    )
 
-    # ---- test-side precompute once per split for ALL x_test ----
-    # w_test: length K
-    x_test_df <- as.data.frame(x_test); colnames(x_test_df) <- x_cols
-    pt <- as.numeric(prop_fit$predict(x_test_df))
-    if (any(!is.finite(pt))) stop("predict returned non-finite propensity values.")
-    p_test <- pmax(pmin(pt, 1 - prop_eps), prop_eps)
-    w_test_vec <- 1 / p_test
+    # AUTO: if fully observed in training split, skip propensity fitting and set weights=1
+    dtr <- dat_tr[[delta_col]]
+    fully_observed_split <- all(is_delta1(dtr)) && !any(is_delta0(dtr))
 
-    # R_test_mat: K x Ny, computed by one bulk call
+    prop_fit <- NULL
+    if (!fully_observed_split) {
+      prop_fit <- fit_missingness_propensity(
+        dat_tr,
+        delta_col = delta_col,
+        x_cols = x_cols,
+        method = prop_method,
+        eps = prop_eps,
+        ...
+      )
+    }
+
+    # ---- test-side weights ----
+    if (fully_observed_split) {
+      w_test_vec <- rep(1, K)
+    } else {
+      x_test_df <- as.data.frame(x_test); colnames(x_test_df) <- x_cols
+      pt <- as.numeric(prop_fit$predict(x_test_df))
+      if (any(!is.finite(pt))) stop("predict returned non-finite propensity values.")
+      p_test <- pmax(pmin(pt, 1 - prop_eps), prop_eps)
+      w_test_vec <- 1 / p_test
+    }
+
+    # ---- test-side nonconformity scores R_test_mat ----
     X_big <- x_test[rep(seq_len(K), each = Ny), , drop = FALSE]
     y_big <- rep(y_grid, times = K)
     X_big_df <- as.data.frame(X_big); colnames(X_big_df) <- x_cols
     f_big <- dens_fit$predict_density(X_big_df, y_big)
     f_big <- as.numeric(f_big)
     if (any(!is.finite(f_big))) stop("predict_density returned non-finite values.")
-    R_test_big <- -as.numeric(f_big)
-    R_test_mat <- matrix(R_test_big, nrow = K, ncol = Ny, byrow = TRUE)
+    R_test_mat <- matrix(-f_big, nrow = K, ncol = Ny, byrow = TRUE)
 
-    # ---- calibration subsamples: build B caches of (R_sorted, W_ge, sum_w) ----
+    # ---- calibration subsamples cache ----
     sub_cache <- vector("list", B)
     for (b in seq_len(B)) {
       seed_b <- if (!is.null(seed_s)) seed_s + 10000L + b else NULL
       dat_sub <- subsample_one_per_subject(dat_ca, seed0 = seed_b)
 
       d_raw <- dat_sub[[delta_col]]
-      d_chr <- toupper(trimws(as.character(d_raw)))
-      d_num <- suppressWarnings(as.numeric(d_chr))
-      delta1 <- (!is.na(d_num) & d_num == 1) | (d_chr %in% c("1","TRUE","T"))
+      delta1 <- is_delta1(d_raw)
       d_obs <- dat_sub[delta1 & !is.na(dat_sub[[y_col]]), , drop = FALSE]
       if (nrow(d_obs) == 0) {
         sub_cache[[b]] <- list(empty = TRUE)
         next
       }
 
-      Xc <- as.matrix(d_obs[, x_cols, drop = FALSE])
+      Xc_df <- as.data.frame(as.matrix(d_obs[, x_cols, drop = FALSE])); colnames(Xc_df) <- x_cols
       Yc <- as.numeric(d_obs[[y_col]])
 
-      Xc_df <- as.data.frame(Xc); colnames(Xc_df) <- x_cols
       R_c <- -as.numeric(dens_fit$predict_density(Xc_df, Yc))
-      pc <- as.numeric(prop_fit$predict(Xc_df))
-      if (any(!is.finite(pc))) stop("predict returned non-finite propensity values in calibration.")
-      p_c <- pmax(pmin(pc, 1 - prop_eps), prop_eps)
-      w_c <- 1 / p_c
+
+      if (fully_observed_split) {
+        w_c <- rep(1, nrow(Xc_df))
+      } else {
+        pc <- as.numeric(prop_fit$predict(Xc_df))
+        if (any(!is.finite(pc))) stop("predict returned non-finite propensity values in calibration.")
+        p_c <- pmax(pmin(pc, 1 - prop_eps), prop_eps)
+        w_c <- 1 / p_c
+      }
 
       ord <- order(R_c)
       R_sorted <- R_c[ord]
       w_sorted <- w_c[ord]
-      W_ge <- rev(cumsum(rev(w_sorted)))  # sum_{k>=j} w_sorted[k]
+      W_ge <- rev(cumsum(rev(w_sorted)))
       sum_w <- sum(w_c)
 
       sub_cache[[b]] <- list(
@@ -296,67 +319,54 @@ hcp_conformal_region <- function(
       )
     }
 
-    # ---- compute p-values for all (b,k,y) and combine over B ----
+    # ---- compute p-values ----
     p_bky <- array(NA_real_, dim = c(B, K, Ny))
-
     for (b in seq_len(B)) {
       cb <- sub_cache[[b]]
       if (isTRUE(cb$empty)) {
         p_bky[b, , ] <- NA_real_
         next
       }
-
       R_sorted <- cb$R_sorted
       W_ge <- cb$W_ge
       sum_w <- cb$sum_w
 
-      # loop over k (K is small, e.g., 10); inside is vectorized over y_grid
       for (k in seq_len(K)) {
         denom <- sum_w + w_test_vec[k]
         rt <- R_test_mat[k, ]
-
-        j_ge <- findInterval(rt, R_sorted, left.open = TRUE) + 1L  # index of first element in R_sorted that is >= rt (vectorized over rt)
+        j_ge <- findInterval(rt, R_sorted, left.open = TRUE) + 1L
         w_ge <- ifelse(j_ge <= length(W_ge), W_ge[j_ge], 0)
         p_bky[b, k, ] <- (w_ge + w_test_vec[k]) / denom
       }
     }
 
-    # combine over B -> K x Ny
-    p_split_kny <- combine_array_firstdim(p_bky, method = combine_B)
-    p_split_arr[s, , ] <- p_split_kny
+    p_split_arr[s, , ] <- combine_array_firstdim(p_bky, method = combine_B)
 
-    if (isTRUE(return_details)) split_meta[[s]] <- list(train_ids = sp$train_ids)
+    if (isTRUE(return_details)) split_meta[[s]] <- list(train_ids = sp$train_ids,
+                                                        fully_observed = fully_observed_split)
   }
 
-  # ---- combine over S -> final p-values K x Ny ----
+  # ---- combine over S ----
   p_final_kny <- combine_array_firstdim(p_split_arr, method = combine_S)
 
-  # ---- regions + envelope endpoints ----
   regions <- vector("list", K)
   lohi <- matrix(NA_real_, nrow = K, ncol = 2)
   colnames(lohi) <- c("lo", "hi")
-
   for (k in seq_len(K)) {
     reg <- y_grid[p_final_kny[k, ] > alpha]
     regions[[k]] <- reg
-    if (length(reg) == 0) {
-      lohi[k, ] <- c(NA_real_, NA_real_)
-    } else {
-      lohi[k, ] <- c(min(reg), max(reg))
-    }
+    if (length(reg) == 0) lohi[k, ] <- c(NA_real_, NA_real_) else lohi[k, ] <- c(min(reg), max(reg))
   }
 
   out <- list(
-    region = regions,     # list length K
-    lo_hi = lohi,         # K x 2
+    region = regions,
+    lo_hi = lohi,
     p_final = p_final_kny,
     y_grid = y_grid
   )
-
   if (isTRUE(return_details)) {
-    out$p_split <- p_split_arr   # S x K x Ny
+    out$p_split <- p_split_arr
     out$split_meta <- split_meta
   }
-
   out
 }
