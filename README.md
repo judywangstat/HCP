@@ -174,7 +174,7 @@ out_PM$pred
 ```
 
 ### B)  Plots for two cases
-####  Load CD4 data as an example (lqmix::cd4)
+####  Load the CD4 dataset as an example (lqmix::cd4)
 ```r
 if (!requireNamespace("lqmix", quietly = TRUE)) {
   stop("Package 'lqmix' is required for this example.")
@@ -198,6 +198,19 @@ x_cols <- sort(grep("^X\\d+$", names(dat0), value = TRUE))
 yr <- range(dat0$Y_full, finite = TRUE)
 pad <- 0.10 * diff(yr); if (!is.finite(pad) || pad <= 0) pad <- 50
 y_grid <- seq(max(0, yr[1] - pad), yr[2] + pad, length.out = 201)
+```
+
+#### Quick check: observed trajectories
+```r
+tr0 <- setNames(dat0[, c("id","X1","Y_full")], c("pid","X1","Y"))
+plot(range(tr0$X1), range(tr0$Y),
+     type = "n", xlab = "Time (X1)", ylab = "CD4 count",
+     main = sprintf("Training trajectories (%d subjects)", length(unique(tr0$pid))))
+for (pp in unique(tr0$pid)) {
+  ii <- which(tr0$pid == pp)
+  if (length(ii) >= 2) lines(tr0$X1[ii], tr0$Y[ii], col = "grey70", lwd = 1)
+}
+legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", lwd = 1)
 ```
 
 ####  Plot A: one patient, multiple measurements (band vs time)
