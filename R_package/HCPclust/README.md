@@ -9,7 +9,7 @@ You can install the development version of **HCPclust** directly from GitHub usi
 
 ```r
 install.packages("remotes")
-remotes::install_github("judywangstat/HCP", subdir = "R_package/HCPclust")
+remotes::install_github("judywangstat/HCP", subdir="R_package/HCPclust", force = TRUE)
 library(HCPclust)
 ```
 ## Method overview
