@@ -212,6 +212,9 @@ for (pp in unique(tr0$pid)) {
 }
 legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", lwd = 1)
 ```
+<p align="center">
+  <img src="figures/training.pdf" width="500">
+</p>
 
 ####  Case A: band vs time for subjects
 ```r
