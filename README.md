@@ -213,7 +213,7 @@ for (pp in unique(tr0$pid)) {
 legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", lwd = 1)
 ```
 <p align="center">
-  <img src="figures/training.pdf" width="500">
+  <img src="figures/training.png" width="500">
 </p>
 
 ####  Case A: band vs time for subjects
@@ -252,8 +252,14 @@ main = sprintf("Case A: prediction band vs time: pid=%s (M=%d)", pid, nrow(pred)
 }
 ```
 <p align="center">
-  <img src="figures/band_example.png" width="500">
+  <img src="figures/pid54.png" width="500">
 </p>
+<p align="center">
+  <img src="figures/pid92.png" width="500">
+</p>
+<p align="center">
+  <img src="figures/pid186.png" width="500">
+</p
 
 #### Case B: random subjects; one time point per subject
 ```r
@@ -279,5 +285,5 @@ plot_hcp_intervals(predB, mode = "pid", pid_col = "pid", x_sort_col = "X1",
                    main = "Case B: random subjects, one time point")
 ```
 <p align="center">
-  <img src="figures/pid_example.png" width="500">
+  <img src="figures/subjects.png" width="500">
 </p>
