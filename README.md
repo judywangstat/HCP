@@ -213,7 +213,7 @@ for (pp in unique(tr0$pid)) {
 legend("topright", bty = "n", legend = "Training trajectories", col = "grey70", lwd = 1)
 ```
 <p align="center">
-  <img src="figures/training.png" width="500">
+  <img src="figures/observed.png" width="500">
 </p>
 
 ####  Case A: band vs time for subjects
