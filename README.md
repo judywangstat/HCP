@@ -12,6 +12,15 @@ install.packages("remotes")
 remotes::install_github("judywangstat/HCP")
 library(HCPclust)
 ```
+
+## Reproducibility
+
+This repository is dedicated to the R package implementation and contains only the core functions of the HCPclust method.
+
+All reproducibility materials are maintained in a separate repository. This includes complete scripts, data-processing pipelines, and configuration details required to fully reproduce the simulation results and real-data analyses presented in the paper.
+
+[link]
+
 ## Method overview
 
 The HCP procedure has four main steps.
@@ -288,7 +297,3 @@ plot_hcp_intervals(predB, mode = "pid", pid_col = "pid", x_sort_col = "X1",
 <p align="center">
   <img src="figures/subjects.png" width="500">
 </p>
-
-## Reproducibility
-
-This repository contains only the R package. The reproducibility materials for the paper, including simulation and real-data scripts, are provided in a separate repository: [link].
