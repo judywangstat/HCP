@@ -2,6 +2,11 @@
 
 **HCPclust** is an R package for **Hierarchical Conformal Prediction (HCP)**. It targets **clustered / longitudinal** data where each subject has repeated measurements with **within-subject dependence**, and the outcome can be missing under a covariate-dependent **Missing At Random (MAR)** mechanism.
 
+## Reproducibility
+
+This repository contains only the **R package**, which provides the core functions for the HCPclust method. 
+All **reproducibility materials** are maintained in a separate repository, [link], which includes complete scripts, data-processing pipelines, and configuration details required to fully reproduce the simulation results and real-data analyses presented in the paper.
+
 
 ## Installation
 
@@ -12,13 +17,6 @@ install.packages("remotes")
 remotes::install_github("judywangstat/HCP")
 library(HCPclust)
 ```
-
-## Reproducibility
-
-This repository contains only the **R package**, which provides the core functions for the HCPclust method. 
-
-All **reproducibility materials** are maintained in a separate repository, [link], which includes complete scripts, data-processing pipelines, and configuration details required to fully reproduce the simulation results and real-data analyses presented in the paper.
-
 
 ## Method overview
 
