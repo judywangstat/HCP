@@ -1,6 +1,6 @@
 Package: HCPclust
 Title: Hierarchical Conformal Prediction for Clustered Data with Missing Responses
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
     c(
       person("Menghan", "Yi",email = "menghany@umich.edu", role = c("aut", "cre")),
